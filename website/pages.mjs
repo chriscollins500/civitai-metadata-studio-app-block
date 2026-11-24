@@ -101,15 +101,16 @@ function guide({ sample }) {
       <div class="article-flow">
         <section id="launch">
           <h2>Open on Civitai</h2>
+          <p>Start on the Civitai site you use and sign in there.</p>
+          <div class="actions">
+            ${anchor(links.civitaiCom, "Visit Civitai.com", "button primary")}
+            ${anchor(links.civitaiRed, "Visit Civitai.red", "button secondary")}
+          </div>
           <ol class="steps">
-            <li><strong>Sign in to the Civitai site you use.</strong> In the navigation, choose <strong>Apps</strong> and then <strong>Browse the store</strong>.</li>
+            <li>After you sign in, choose <strong>Apps</strong> and then <strong>Browse the store</strong>.</li>
             <li>Find <strong>Civitai Metadata Studio</strong> in the Store.</li>
             <li>Choose <strong>Open</strong> on its listing. Next time, find it under <strong>My apps</strong> in the same browser.</li>
           </ol>
-          <div class="actions">
-            ${anchor(links.storeCom, "Civitai.com App Store", "button primary")}
-            ${anchor(links.storeRed, "Civitai.red App Store", "button secondary")}
-          </div>
         </section>
         <section id="practice">
           <h2>Try a small edit</h2>

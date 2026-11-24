@@ -8,7 +8,7 @@ See the recipe inside an AI image. Read its prompt, seed, model and LoRA details
 
 ## Use the app
 
-For your first visit, sign in to Civitai and choose **Apps → Browse the store**. Find **Civitai Metadata Studio** and choose **Open**. To return, look under **My apps** in the same browser. [Civitai.com App Store](https://civitai.com/apps/store) · [Civitai.red App Store](https://civitai.red/apps/store)
+For your first visit, sign in on the Civitai site you use and choose **Apps → Browse the store**. Find **Civitai Metadata Studio** and choose **Open**. To return, look under **My apps** in the same browser. [Civitai.com homepage](https://civitai.com/) · [Civitai.red homepage](https://civitai.red/)
 
 1. **Open a PNG, JPEG, or WebP.** The editor reads the settings and workflow information still inside the file.
 2. **Review the recipe.** Check the prompt, seed, and resources. Open an exact Civitai model version when the editor can verify it.
