@@ -1,0 +1,23 @@
+name: Website or docs issue
+description: Flag a broken link, unclear instructions, or an accessibility problem on the project site, wiki, or source docs.
+labels: ["documentation"]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or file
+      description: Paste the public page URL or give the repository-relative path.
+    validations:
+      required: true
+  - type: textarea
+    id: detail
+    attributes:
+      label: What should we fix?
+      description: Point to the wording, link, or control. If something fails, describe what you tried and what you expected.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, device, or assistive technology
+      description: Add this if it helps reproduce an interaction or display issue.

@@ -23,4 +23,4 @@ The writer preserves encoded pixels and supported animation frames. Original ret
 
 One MiB is 1,048,576 bytes. Limits measure finished bytes, so a compact 8K PNG can fit even when a smaller image with a larger file size does not. Civitai also applies rolling download budgets. Keep the tab open until your downloads are confirmed. If the host does not confirm an attempted download, check Chrome’s or Edge’s download history before trying again. The app avoids automatically resending an export with an unknown outcome.
 
-[Getting started](Getting-Started.md) · [Troubleshooting](Troubleshooting.md) · [Architecture](Architecture.md)
+[Getting started](Getting-Started.md) · [Troubleshooting](Troubleshooting.md) · [Architecture](Architecture.md) · [Privacy on the project website](https://chriscollins500.github.io/civitai-metadata-studio-app-block/privacy/)

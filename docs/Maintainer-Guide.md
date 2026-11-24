@@ -20,6 +20,23 @@ civitai app submit build/app-block --package-only -o build/civitai-cli-package.z
 
 The GitHub workflow verifies the source and artifacts. The Civitai listing and deployment use Civitai’s own review process. Check the current official documentation before changing its manifest, permissions or host contract. [Official pack and submit documentation](https://developer.civitai.com/apps/guide/packaging) · [Review and deploy](https://developer.civitai.com/apps/guide/review-and-deploy)
 
+## Maintain the project website and wiki
+
+Update the canonical guides in `docs/` and the reader-facing Pages copy in `website/pages.mjs`. Pages reads release hashes and sizes from the versioned release record. The home page reads its example fields from the actual downloadable PNG.
+
+After a Civitai deployment, record the verified version, HTML size, digest, and verification date in `releases/live.json`. Check the reconstructed HTML against the host. The signed GitHub release and its historical reference stay tied to their tag.
+
+```sh
+npm run site:build
+npm run wiki:build
+```
+
+The website build writes its public allowlist to `build/site/`. GitHub checks it on pull requests and deploys the verified artifact from `main`. Preview Pages under `/civitai-metadata-studio-app-block/`, which is the same base path as the published site. A site-only change can run `npm run reproduce` to verify the Civitai package bytes.
+
+The Wiki build mirrors the canonical guides into `build/wiki/`, rewrites their navigation, and generates the Wiki home, sidebar, and footer. Copy the generated Markdown files into the public `.wiki.git` checkout, review the diff, and commit the changed pages there. GitHub tracks the Wiki in its own repository.
+
+The downloadable PNG carries deliberately authored example settings. Its encoded image matches the unmodified synthetic artwork kept alongside it. The smaller WebP is loaded for the visual preview. The website bundles Instrument Serif’s Latin font files and the original SIL Open Font License for local loading. [Instrument Serif source](https://github.com/google/fonts/tree/main/ofl/instrumentserif) · [Project website](https://chriscollins500.github.io/civitai-metadata-studio-app-block/) · [Pages workflow](../.github/workflows/pages.yml)
+
 ## Preserve public and private boundaries
 
 Use test data you can share. Keep authentication, local settings, diagnostic media, workstation paths, and private workbench history out of source and release assets. For issues, route public reproducible App Block behavior here and send vulnerabilities through the private security form. [Security](../SECURITY.md) · [Contributing](../CONTRIBUTING.md)

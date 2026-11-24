@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Start with the guide and troubleshooting
+    url: https://chriscollins500.github.io/civitai-metadata-studio-app-block/guide/#faq
+    about: Open the hosted app for the first time, try the example, or find solutions to common problems.
   - name: Ask a usage question
     url: https://github.com/chriscollins500/civitai-metadata-studio-app-block/discussions
     about: Get help with the Civitai-hosted app.

@@ -9,7 +9,7 @@
 | The hosted save asks for confirmation | Read the disclosure and choose whether to pass the finished file to the Civitai page for download. |
 | A download did not appear | Check the browser’s download history and destination folder first. Keep the editor open so your edits are still available. |
 | A large output cannot fit | Save with the [standalone edition](https://github.com/chriscollins500/civitai-metadata-studio/releases/latest). Keep the original file for a hash-bound handoff when using a compatible build. |
-| The published hash passes, but the live comparison differs | Check whether Civitai is now serving a newer version. The tag’s committed record remains the reference for that tag. |
+| The published hash passes, but the live comparison differs | Run `npm run verify:live` from `main`, then check [the hosted build record](../releases/live.json). A newer Civitai deployment can change the result. The tag’s committed record is the reference for the signed GitHub release. |
 
 ## Ask for help
 

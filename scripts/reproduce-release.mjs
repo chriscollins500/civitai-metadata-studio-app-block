@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { appBlockDirectory, root } from "./output-paths.mjs";
+import { renderAppBlock } from "./render-app-block.mjs";
 
 const args = process.argv.slice(2);
 assert.ok(args.length === 0 || (args.length === 1 && args[0] === "--live"), "Pass --live for a direct production comparison.");
@@ -21,19 +22,26 @@ const archiveName = "civitai-metadata-studio-app-block-" + manifest.version + ".
 assert.equal(release.archive.filename, archiveName);
 const archive = await readFile(join(root, "build", archiveName));
 
-for (const [name, bytes, expected] of [
-  ["index.html", html, release.productionHtml],
-  [archiveName, archive, release.archive]
-]) {
+function assertArtifact(name, bytes, expected) {
   const hash = createHash("sha256").update(bytes).digest("hex");
   assert.equal(bytes.length, expected.bytes, name + " byte length differs from the release record.");
   assert.equal(hash, expected.sha256, name + " SHA-256 differs from the release record.");
   console.log(name + " · " + bytes.length + " bytes · SHA-256 " + hash);
 }
 
+assertArtifact("index.html (signed source release " + release.version + ")", html, release.productionHtml);
+assertArtifact(archiveName, archive, release.archive);
+
+const hosted = JSON.parse(await readFile(join(root, "releases", "live.json"), "utf8"));
+assert.equal(hosted.referenceVersion, release.version);
+assert.match(hosted.version, /^\d+\.\d+\.\d+$/u);
+const hostedBuild = await renderAppBlock(hosted.version, epoch);
+const hostedHtml = Buffer.from(hostedBuild.html);
+assertArtifact("index.html (hosted " + hosted.version + ")", hostedHtml, hosted.html);
+
 if (args[0] === "--live") {
   const liveUrl = "https://civitai-metadata-studio.civit.ai/";
-  assert.equal(release.productionHtml.url, liveUrl);
+  assert.equal(hosted.html.url, liveUrl);
   const response = await fetch(liveUrl, {
     cache: "no-store", credentials: "omit", redirect: "error", signal: AbortSignal.timeout(20_000)
   });
@@ -43,10 +51,10 @@ if (args[0] === "--live") {
   let received = 0;
   for await (const part of response.body) {
     received += part.byteLength;
-    assert.ok(received <= html.length, "The live deployment grew beyond this release's recorded size.");
+    assert.ok(received <= hostedHtml.length, "The live deployment grew beyond its recorded size.");
     parts.push(part);
   }
   const live = Buffer.concat(parts, received);
-  assert.ok(html.equals(live), "Live HTML differs from this release. Check whether Civitai deployed a newer version.");
-  console.log("Live HTML matches the rebuilt release byte for byte · " + new Date().toISOString());
+  assert.ok(hostedHtml.equals(live), "Live HTML differs from hosted " + hosted.version + ". Check whether Civitai deployed a newer version.");
+  console.log("Live HTML matches rebuilt hosted " + hosted.version + " byte for byte · " + new Date().toISOString());
 }
