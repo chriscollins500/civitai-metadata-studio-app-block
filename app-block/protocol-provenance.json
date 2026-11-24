@@ -1,0 +1,33 @@
+{
+  "accessedOn": "2026-11-16",
+  "status": "Source-reviewed subset; real civitai.red host validation outstanding",
+  "contractPackage": "@civitai/app-sdk",
+  "contractSourceVersion": "0.89.0",
+  "sdkInstalled": false,
+  "referenceSnapshot": {
+    "sourceUrl": "https://civitai.com/api/v1/enums",
+    "accessedOn": "2026-11-16",
+    "sha256": "05ca27b5a76fdac34faee72964ffc3bb939714fe869511a40014fa2ee9f57d7e",
+    "reason": "The public enums endpoint omits browser CORS headers; hosted reference lists use this explicitly dated public snapshot without a proxy."
+  },
+  "cliValidation": {
+    "version": "0.1.141",
+    "commit": "810d7cf2730ec11d304f4bc059a7e903e7695f95",
+    "windowsAmd64Sha256": "4f118b59cd259e8c894499920b40ea80d91b7c7a7ce7a9654056b0fb8baf91e2",
+    "accessedOn": "2026-11-16",
+    "semanticCheck": "iframe.minHeight is required in [40, 4000]; the schema alone does not require it"
+  },
+  "schemaSnapshotSha256": "024dcdad4b709adbf817647896433321ff5c26073044f0064666fed9c5c893a5",
+  "sources": {
+    "messages": "https://github.com/civitai/civitai-app-starters/blob/05068f8c9f4f148eee2b440c80db6a4091d3261c/packages/civitai-app-sdk/src/blocks/messages.ts",
+    "types": "https://github.com/civitai/civitai-app-starters/blob/05068f8c9f4f148eee2b440c80db6a4091d3261c/packages/civitai-app-sdk/src/blocks/types.ts",
+    "origins": "https://github.com/civitai/cli/blob/68a174d6858b1722687ac34f4c098cd77cea6f06/internal/blockproto/parent_origins.go",
+    "schema": "https://github.com/civitai/cli/blob/68a174d6858b1722687ac34f4c098cd77cea6f06/schema/app-block.manifest.schema.json",
+    "saveHandler": "https://github.com/civitai/civitai/blob/05b4e2f0e19d6e7a44cdaefc01186f59dce19600/src/components/AppBlocks/saveImageDownload.ts",
+    "zipRules": "https://github.com/civitai/civitai-app-starters/blob/05068f8c9f4f148eee2b440c80db6a4091d3261c/packages/civitai-app-sdk/src/save-zip/index.ts"
+  },
+  "outboundMessages": ["BLOCK_READY", "SAVE_IMAGE", "NAVIGATE"],
+  "ignoredHostFields": ["token", "viewer", "settings", "browsingLevel"],
+  "pageSlotId": "app.page",
+  "bundleAllowlist": ["index.html", "block.manifest.json", "LICENSE", "SHA256SUMS.txt"]
+}

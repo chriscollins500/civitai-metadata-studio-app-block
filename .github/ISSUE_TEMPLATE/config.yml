@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Ask a usage question
+    url: https://github.com/chriscollins500/civitai-metadata-studio-app-block/discussions
+    about: Get help with the Civitai-hosted app.
+  - name: Standalone edition support
+    url: https://github.com/chriscollins500/civitai-metadata-studio/issues
+    about: Report a problem with the portable HTML or its optional automation.
+  - name: Report a vulnerability privately
+    url: https://github.com/chriscollins500/civitai-metadata-studio-app-block/security/advisories/new
+    about: Use a private report for a suspected vulnerability or data leak.

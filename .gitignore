@@ -1,0 +1,7 @@
+/build/
+/.tmp/
+/coverage/
+/node_modules/
+/.venv/
+.env*
+*.local

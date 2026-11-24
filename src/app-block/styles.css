@@ -1,0 +1,21 @@
+.host-panel { margin: .6rem auto; padding: .65rem 1rem; width: min(98%, 100rem); border: 1px solid var(--line); border-radius: .85rem; background: var(--surface); font-size: .8rem; overflow-wrap: anywhere; }
+.host-heading { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; }
+.host-heading > span { color: var(--ink-muted); flex: 1; }
+.host-panel summary { cursor: pointer; padding-block: .5rem; font-weight: 650; }
+.host-panel details[open] { max-height: min(45dvh, 24rem); overflow-y: auto; padding-right: .4rem; }
+.host-panel p { line-height: 1.6; margin-block: .5rem; }
+.host-feasibility { margin-bottom: 0; color: var(--ink-muted); }
+.standalone-destination { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: .4rem .8rem; }
+.standalone-destination input { flex: 1 1 15rem; min-width: 0; width: 100%; font-size: .76rem; }
+#hostSaveDialog { padding: 1.5rem; max-width: min(38rem, calc(100vw - 2rem)); }
+#hostSaveDialog p { line-height: 1.65; }
+.site-header, .header-actions { flex-wrap: wrap; }
+.header-actions { min-width: 0; }
+body.working-state { grid-template-rows: auto auto minmax(0, 1fr); }
+body.working-state .host-panel { grid-row: 2; }
+body.working-state main { grid-row: 3; }
+@media (max-width: 52rem) { .host-panel { width: calc(100% - 1rem); } .host-heading { gap: .35rem; } .header-actions { gap: .3rem; } }
+@media (max-width: 52rem) {
+  #hostFeasibility[data-tone="normal"], #headerClearQueueButton { display: none; }
+  .site-header { padding: .6rem .8rem; gap: .5rem; }
+}

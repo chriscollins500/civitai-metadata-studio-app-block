@@ -1,0 +1,20 @@
+  <section id="hostPanel" class="host-panel" aria-labelledby="hostTitle">
+    <div class="host-heading"><strong id="hostTitle">Civitai edition</strong><span id="hostConnection" role="status">Waiting for the Civitai host</span><button id="stopHostExport" class="button quiet small" type="button" disabled hidden>Stop queued downloads</button></div>
+    <details id="hostPrivacyDetails"><summary>Export privacy, limits, and standalone version</summary>
+      <p>Editing stays in this browser. Saving passes the finished file and its retained metadata, including prompts and workflows, to Civitai's page in this tab so it can download it. That page can access the entire export. The reviewed download path does not upload it; future host behavior is outside this editor's control.</p>
+      <p>Files up to 50 MiB save directly. Larger files use an explicitly approved lossless ZIP within 256 MiB including overhead. Batches may need several ZIPs. Original pixels and animation frames are preserved. Keep this tab open until your downloads are checked.</p>
+      <p>Use standalone for oversized files or if you do not want exports to reach Civitai's page. To continue edits, open the exact original images in the locally built standalone editor, then choose Resume edits with a saved edit handoff. The published GitHub version may need this new feature before it can import a handoff.</p>
+      <label for="standaloneUrl">Standalone version on GitHub</label><div class="standalone-destination"><input id="standaloneUrl" type="url" readonly value="https://github.com/chriscollins500/civitai-metadata-studio"><button id="copyStandaloneUrl" class="button secondary small" type="button">Copy URL</button></div>
+      <label class="preserve-check" for="hostGenericNames"><input id="hostGenericNames" type="checkbox"> Use generic export filenames</label>
+      <p>Only public resource identities are cached, in bounded memory for this tab. Refreshing or closing clears the cache and unsaved edits. No credentials are saved.</p>
+    </details>
+    <p id="hostFeasibility" class="host-feasibility" role="status" data-tone="normal">Choose images to inspect their export size. Save edit handoffs separately before closing this tab.</p>
+  </section>
+  <dialog id="hostSaveDialog" aria-labelledby="hostSaveTitle" aria-describedby="hostSaveExplanation">
+    <h2 id="hostSaveTitle">Save through Civitai</h2>
+    <p id="hostSaveExplanation">Civitai's parent page will receive the finished files and can access their retained pixels, prompts, workflows, and other metadata. The reviewed path starts a browser download; it is not an upload.</p>
+    <p id="hostPackageSummary"></p>
+    <label id="hostAcknowledgementLabel" class="preserve-check" for="hostAcknowledgement"><input id="hostAcknowledgement" type="checkbox"> I understand and allow this browser-side export.</label>
+    <p>Your original files are never changed. Cancel to keep editing or use the standalone version.</p>
+    <div class="dialog-actions"><button id="cancelHostSave" class="button quiet" type="button">Cancel</button><button id="confirmHostSave" class="button primary" type="button" disabled>Start download</button></div>
+  </dialog>

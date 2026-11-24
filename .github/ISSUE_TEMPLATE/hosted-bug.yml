@@ -1,0 +1,44 @@
+name: Hosted app bug
+description: Report a reproducible problem on Civitai.com or Civitai.red.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: Please use synthetic data. Keep private media, prompts, workflows, paths, and credentials out of the report.
+  - type: dropdown
+    id: host
+    attributes:
+      label: Civitai host
+      options:
+        - Civitai.com
+        - Civitai.red
+        - Both
+        - Local synthetic host
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Browser version, operating system, and app version
+      placeholder: Chrome 158 on Windows 11 with App Block 0.1.1
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include the file type and approximate size when they affect the result.
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened and what did you expect?
+      description: Include the exact visible error and whether the browser started a download.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Synthetic fixture or redacted evidence
+      description: A small shareable file or screenshot helps reviewers confirm the fix.

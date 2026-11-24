@@ -1,0 +1,23 @@
+name: Hosted app improvement
+description: Suggest something that would improve the Civitai App Block.
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: need
+    attributes:
+      label: What are you trying to do?
+      description: Describe the editing, verification, or export task.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: What should change?
+      description: Describe how you would tell that it works.
+    validations:
+      required: true
+  - type: textarea
+    id: constraints
+    attributes:
+      label: What should the app preserve?
+      description: Note any privacy, accessibility, format, or large-file constraints that matter.

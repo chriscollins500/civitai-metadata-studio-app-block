@@ -1,0 +1,26 @@
+{
+  "version": "0.1.1",
+  "sourceDateEpoch": 1795305600,
+  "upstream": {
+    "repository": "https://github.com/chriscollins500/civitai-metadata-studio",
+    "commit": "6682f2a550a75fe6d849f35012915c5e19c96695",
+    "engineVersion": "1.0.1"
+  },
+  "productionHtml": {
+    "url": "https://civitai-metadata-studio.civit.ai/",
+    "bytes": 444139,
+    "sha256": "860c80e4ca714600469f43cccda5b711216cc3ba8c3a1bdb53ed0cafc766be48"
+  },
+  "archive": {
+    "filename": "civitai-metadata-studio-app-block-0.1.1.zip",
+    "bytes": 446870,
+    "sha256": "186ea99fce4313bc6eacb3d17ddf829468696d0b3fa7c40a339f43b43761f92b"
+  },
+  "civitaiCliPackage": {
+    "toolVersion": "0.1.150",
+    "entryModifiedUnixSeconds": 1795316961,
+    "entryDosTimeZone": "America/New_York",
+    "bytes": 105006,
+    "sha256": "431567dfd7fff1ca96b7baf690113b09fdbae74a8f6faf3c431f04fc61dc68c4"
+  }
+}
