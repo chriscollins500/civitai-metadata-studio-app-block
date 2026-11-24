@@ -1,12 +1,45 @@
 import { createServer } from "node:http";
 import { createHash } from "node:crypto";
-import { lstat, readFile, readdir } from "node:fs/promises";
+import { constants } from "node:fs";
+import { lstat, open, readdir } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { appBlockDirectory } from "./output-paths.mjs";
 
 const names = ["index.html", "block.manifest.json", "LICENSE", "SHA256SUMS.txt"];
 const digest = (bytes) => createHash("sha256").update(bytes).digest("hex");
+const maxFileBytes = 16n * 1024n * 1024n;
+const readFlags = constants.O_RDONLY | (constants.O_NOFOLLOW ?? 0) | (constants.O_NONBLOCK ?? 0);
+const invalidFileMessage = "Preview requires bounded regular bundle files.";
+
+async function readBundleFile(path) {
+  const handle = await open(path, readFlags).catch((error) => {
+    if (error.code === "ELOOP") throw new Error(invalidFileMessage, { cause: error });
+    throw error;
+  });
+  try {
+    const opened = await handle.stat({ bigint: true });
+    // Windows lacks O_NOFOLLOW. Confirm the directory entry is a regular file
+    // matching the already-open handle, so its path is never used to read bytes.
+    const entry = await lstat(path, { bigint: true });
+    if (!opened.isFile() || !entry.isFile() || opened.dev !== entry.dev || opened.ino !== entry.ino || opened.size > maxFileBytes) {
+      throw new Error(invalidFileMessage);
+    }
+
+    const size = Number(opened.size);
+    const bytes = Buffer.alloc(size + 1);
+    let offset = 0;
+    while (offset < bytes.length) {
+      const { bytesRead } = await handle.read(bytes, offset, bytes.length - offset, offset);
+      if (bytesRead === 0) break;
+      offset += bytesRead;
+    }
+    if (offset !== size) throw new Error("Preview bundle file size changed while reading.");
+    return bytes.subarray(0, size);
+  } finally {
+    await handle.close();
+  }
+}
 
 // Serve an immutable, audited build snapshot. Never expose the workbench or log
 // request URLs: the tunnel's entry URL can contain a short-lived credential.
@@ -17,9 +50,7 @@ export async function startAppBlockPreview({ directory = appBlockDirectory, port
   if (entries.length !== names.length || names.some((name) => !entries.includes(name))) throw new Error("Preview directory differs from the four-file bundle allowlist.");
   const files = new Map();
   for (const name of names) {
-    const path = join(directory, name), info = await lstat(path);
-    if (!info.isFile() || info.isSymbolicLink() || info.size > 16 * 1024 * 1024) throw new Error("Preview requires bounded regular bundle files.");
-    files.set(name, await readFile(path));
+    files.set(name, await readBundleFile(join(directory, name)));
   }
   const sums = files.get("SHA256SUMS.txt").toString("utf8").trim().split(/\r?\n/u);
   const expected = new Map(sums.map((line) => line.split("  ")));

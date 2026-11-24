@@ -2,7 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { request } from "node:http";
-import { mkdtemp, writeFile, rm } from "node:fs/promises";
+import { mkdtemp, writeFile, rm, symlink, truncate } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { startAppBlockPreview } from "../scripts/serve-app-block-preview.mjs";
@@ -52,4 +52,27 @@ test("preview refuses unexpected files and checksum drift before listening", asy
   await rm(join(directory, "private.txt"));
   await writeFile(join(directory, "LICENSE"), "MISMATCH");
   await assert.rejects(startAppBlockPreview({ directory, port: 0 }), /checksums/);
+});
+
+test("preview refuses a bundle file that exceeds the snapshot limit", async (t) => {
+  const { directory } = await fixture(t);
+  await truncate(join(directory, "index.html"), 16 * 1024 * 1024 + 1);
+  await assert.rejects(startAppBlockPreview({ directory, port: 0 }), /bounded regular bundle files/);
+});
+
+test("preview refuses a symbolic link in an allowlisted file slot", async (t) => {
+  const { directory } = await fixture(t);
+  const target = await fixture(t);
+  const file = join(directory, "index.html");
+  await rm(file);
+  try {
+    await symlink(join(target.directory, "index.html"), file, "file");
+  } catch (error) {
+    if (process.platform === "win32" && ["EPERM", "EACCES"].includes(error.code)) {
+      t.skip("Creating file symlinks requires Windows developer mode or permission.");
+      return;
+    }
+    throw error;
+  }
+  await assert.rejects(startAppBlockPreview({ directory, port: 0 }), /bounded regular bundle files/);
 });

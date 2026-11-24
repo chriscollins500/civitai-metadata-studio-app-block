@@ -5,6 +5,7 @@ import { crc32 } from "node:zlib";
 import { spawnSync } from "node:child_process";
 import { join } from "node:path";
 import { appBlockDirectory, root } from "./output-paths.mjs";
+import { verifyStandaloneDestination } from "./verify-standalone-destination.mjs";
 
 const args = process.argv.slice(2);
 assert.ok(args.length === 0 || (args.length === 1 && args[0] === "--schema"), "Pass --schema for independent Python schema validation.");
@@ -40,13 +41,14 @@ if (args[0] === "--schema") {
   console.log(validation.stdout.trim());
 }
 const html = await readFile(join(appBlockDirectory, "index.html"), "utf8");
-const script = html.match(/<script>([\s\S]*?)<\/script>/iu)?.[1];
-assert.ok(script);
+const inlineScript = html.match(/<script>([\s\S]*?)<\/script>/iu);
+assert.ok(inlineScript?.[1]);
+const script = inlineScript[1];
 assert.equal(createHash("sha256").update(script).digest("base64"), html.match(/script-src 'sha256-([^']+)'/u)?.[1]);
 assert.doesNotMatch(html, /%%[A-Z_]+%%|<script[^>]+src=|innerHTML\s*=|\beval\s*\(|new\s+Function\s*\(/iu);
 assert.match(html, /connect-src https:\/\/civitai\.com; worker-src 'none'/u);
 assert.match(html, /hostAcknowledgement/u);
-assert.match(html, /https:\/\/github.com\/chriscollins500\/civitai-metadata-studio/u);
+verifyStandaloneDestination(html.slice(0, inlineScript.index), script);
 assert.match(html, /Download started/u);
 assert.match(html, /Load reference lists/u);
 assert.match(html, /Live refresh is unavailable here; fields remain editable/u);
