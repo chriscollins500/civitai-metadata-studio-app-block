@@ -1,9 +1,11 @@
 {
   "$schema": "https://civitai.com/schemas/app-block/v1.json",
   "blockId": "civitai-metadata-studio",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "name": "Civitai Metadata Studio",
   "tagline": "Inspect, verify, and edit image metadata without re-encoding.",
+  "repository": "https://github.com/chriscollins500/civitai-metadata-studio-app-block",
+  "bugs": "https://github.com/chriscollins500/civitai-metadata-studio-app-block/issues",
   "description": "Inspect and edit PNG, JPEG, WebP, and supported animation metadata in your browser. Verify exact Civitai resource identities and save new copies while preserving encoded pixels, animation frames, and retained ComfyUI carriers. Explicit saves pass the finished file and its retained metadata to Civitai's parent page for download. Lossless ZIP batching and a standalone workflow handle larger files. Standalone edition: https://github.com/chriscollins500/civitai-metadata-studio",
   "category": "utility",
   "contentRating": "pg13",
