@@ -13,11 +13,14 @@ This builds from the pinned epoch in [app-block/build-epoch.txt](../app-block/bu
 
 ## Check the current live HTML
 
+Switch to the default branch for the current hosted build proof.
+
 ```sh
+git switch main
 npm run verify:live
 ```
 
-This fetches the production HTML with normal TLS verification and compares the complete bytes with your rebuilt `index.html`. If the live deployment has moved to a different version, use `npm run reproduce` for the historical release check. On Windows use native system trust when your network uses a locally trusted certificate authority.
+This checks the historical source and ZIP, then renders the version recorded in [the hosted build record](../releases/live.json), fetches production HTML with normal TLS verification, and compares the complete bytes. The default branch’s `npm run reproduce` also verifies the hosted build record offline. Use the tagged `npm run reproduce` to check the historical GitHub release by itself. On Windows use native system trust when your network uses a locally trusted certificate authority.
 
 ## Run the other checks
 
@@ -30,6 +33,8 @@ This fetches the production HTML with normal TLS verification and compares the c
 | `npm run verify:schema` | Full Draft 2020-12 manifest validation using Python with the jsonschema package available |
 | `npm run test:browser` | A local synthetic host in Chrome with an existing Playwright installation |
 | `npm run ci` | Syntax, docs, automated tests, and structural bundle verification |
+| `npm run site:build` | Static Pages output, internal links and fragments, and the downloadable example’s metadata and encoded image |
+| `npm run wiki:build` | GitHub Wiki versions of the canonical docs and their shared navigation |
 
 Set `CM_STUDIO_PYTHON` to an existing Python executable if it is named differently on your machine. For the browser check, set `CM_STUDIO_PLAYWRIGHT` to the installed package’s `index.js` and use `npm run test:browser -- msedge` for Edge. The browser harness uses a synthetic opaque iframe, captures only synthetic files, and builds a local reference copy for testing edit handoffs. A served loopback preview is also available after `npm run build` via `npm run preview`. It exposes the four bundle files on port 5186. The production save path requires Civitai’s parent bridge.
 

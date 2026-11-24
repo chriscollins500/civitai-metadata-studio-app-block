@@ -1,5 +1,9 @@
 # Changelog
 
+## Civitai 0.1.2
+
+The hosted listing adds GitHub Source and Support links and an app screenshot. The served HTML can be rebuilt from the same app code with the 0.1.2 build banner and its matching script hash. The signed GitHub ZIP below is the original 0.1.1 release. [Hosted build proof](releases/live.json) · [Release provenance](docs/Release-Provenance.md)
+
 ## 0.1.1
 
 Civitai deployed this version to civitai.com and civitai.red on November 23, 2026. This tag is the first public source snapshot of that hosted release.

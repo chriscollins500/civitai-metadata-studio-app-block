@@ -20,7 +20,7 @@ body:
     id: environment
     attributes:
       label: Browser version, operating system, and app version
-      placeholder: Chrome 158 on Windows 11 with App Block 0.1.1
+      placeholder: Chrome on Windows 11, Civitai App Block version
     validations:
       required: true
   - type: textarea

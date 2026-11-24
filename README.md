@@ -2,11 +2,13 @@
 
 See the recipe inside an AI image. Read its prompt, seed, model and LoRA details, correct what needs fixing, and save a new copy with the same pixels.
 
-[Open on Civitai.com](https://civitai.com/apps/run/civitai-metadata-studio) · [Open on Civitai.red](https://civitai.red/apps/run/civitai-metadata-studio) · [Full standalone edition](https://github.com/chriscollins500/civitai-metadata-studio)
+[Project website](https://chriscollins500.github.io/civitai-metadata-studio-app-block/) · [Start using Studio](https://chriscollins500.github.io/civitai-metadata-studio-app-block/guide/#launch) · [Full standalone edition](https://github.com/chriscollins500/civitai-metadata-studio)
 
 ![Civitai Metadata Studio illustration showing image metadata and exact resource verification](app-block/listing/cover.png)
 
 ## Use the app
+
+For your first visit, sign in to Civitai and choose **Apps → Browse the store**. Find **Civitai Metadata Studio** and choose **Open**. To return, look under **My apps** in the same browser. [Civitai.com App Store](https://civitai.com/apps/store) · [Civitai.red App Store](https://civitai.red/apps/store)
 
 1. **Open a PNG, JPEG, or WebP.** The editor reads the settings and workflow information still inside the file.
 2. **Review the recipe.** Check the prompt, seed, and resources. Open an exact Civitai model version when the editor can verify it.
@@ -26,7 +28,7 @@ Opening and editing happen in your browser. On an explicit save, the Civitai pag
 | [Release provenance](docs/Release-Provenance.md) | Hashes for the live HTML and both package forms |
 | [Maintainer guide](docs/Maintainer-Guide.md) | Preparing a release and reviewing changes |
 
-[Browse the App Block wiki](https://github.com/chriscollins500/civitai-metadata-studio-app-block/wiki)
+[Browse the App Block wiki](https://github.com/chriscollins500/civitai-metadata-studio-app-block/wiki) · [Try the project website’s example](https://chriscollins500.github.io/civitai-metadata-studio-app-block/#example)
 
 ## Reproduce the release
 
@@ -37,7 +39,7 @@ npm run reproduce
 npm run verify:live
 ```
 
-The first command checks the rebuilt HTML and ZIP against the committed release record. The second also compares the complete rebuilt HTML byte for byte with the file served by Civitai. A newer Civitai deployment can change the result of the second command. [Build details](docs/Build-and-Verify.md) · [Release record](releases/0.1.1.json)
+On `main`, the first command checks the signed GitHub v0.1.1 source and ZIP and rebuilds the recorded Civitai 0.1.2 HTML. The second compares that HTML byte for byte with the file currently served by Civitai. GitHub’s attestation verifies the immutable release tag, commit, and assets. [Build details](docs/Build-and-Verify.md) · [GitHub release record](releases/0.1.1.json) · [Hosted build record](releases/live.json) · [Verify the release](https://chriscollins500.github.io/civitai-metadata-studio-app-block/project/#release)
 
 ## Get involved
 

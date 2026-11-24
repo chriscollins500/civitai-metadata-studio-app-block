@@ -16,4 +16,6 @@ This repository owns Civitai App Block behavior and packaging. The standalone re
 4. Run `npm run ci` and the checks relevant to the change. For docs and packaging changes that should leave the release intact, also run `npm run reproduce`.
 5. Open a pull request with the expected behavior, evidence, and test results. Include known limitations.
 
+For public documentation and website changes, run `npm run site:build` and `npm run wiki:build`. Update the versioned guide before refreshing its Wiki mirror. [Website and Wiki maintenance](docs/Maintainer-Guide.md#maintain-the-project-website-and-wiki)
+
 Use a synthetic example for files, screenshots, and logs. Keep any user media, credentials, prompts, and full workstation paths outside pull requests. [Build and verify](docs/Build-and-Verify.md) · [Security](SECURITY.md) · [Code of conduct](CODE_OF_CONDUCT.md)

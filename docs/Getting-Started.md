@@ -1,6 +1,10 @@
 # Getting started
 
-Open Metadata Studio on the Civitai site you already use. Pick a PNG, JPEG, or WebP you generated that still has its original metadata. Export a test copy before editing a whole batch. [Civitai.com](https://civitai.com/apps/run/civitai-metadata-studio) · [Civitai.red](https://civitai.red/apps/run/civitai-metadata-studio)
+## Open from the App Store
+
+Sign in to the Civitai site you already use. Choose **Apps → Browse the store**, find **Civitai Metadata Studio**, and choose **Open** on its listing. To return, look under **My apps** in the same browser. [Civitai.com App Store](https://civitai.com/apps/store) · [Civitai.red App Store](https://civitai.red/apps/store)
+
+Pick a PNG, JPEG, or WebP that still carries its original metadata, or use the public practice file. Export a test copy before editing a whole batch. [Practice with an example](https://chriscollins500.github.io/civitai-metadata-studio-app-block/guide/#practice)
 
 ## Make your first edit
 

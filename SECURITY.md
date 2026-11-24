@@ -2,7 +2,7 @@
 
 ## Supported release
 
-Security reports are welcome for the current hosted App Block. Use the version from the [latest release](https://github.com/chriscollins500/civitai-metadata-studio-app-block/releases/latest) or identify which live host exposed the behavior.
+Security reports are welcome for the current hosted App Block. Identify which live host exposed the behavior and the version if you know it. [Hosted build proof](https://chriscollins500.github.io/civitai-metadata-studio-app-block/project/#release) · [Signed GitHub release](https://github.com/chriscollins500/civitai-metadata-studio-app-block/releases/latest)
 
 ## Report privately
 
@@ -12,7 +12,7 @@ Use public issues for ordinary problems with metadata, downloads, or layout. [Su
 
 ## Repository checks
 
-Dependabot tracks the GitHub Actions used by the verification workflow and groups routine updates into one pull request. GitHub also tracks dependency advisories and can propose security fixes. The App Block build has no npm dependencies. CodeQL scans JavaScript, TypeScript, and GitHub Actions with its extended security suite. The repository’s Security tab shows the latest analysis and alerts.
+Dependabot tracks the GitHub Actions used by the verification and Pages workflows and groups routine updates into one pull request. GitHub also tracks dependency advisories and can propose security fixes. The App Block and website builds have no npm dependencies. CodeQL scans JavaScript, TypeScript, and GitHub Actions with its extended security suite. The repository’s Security tab shows the latest analysis and alerts. [Workflow runs](https://github.com/chriscollins500/civitai-metadata-studio-app-block/actions) · [Verify release assets](https://chriscollins500.github.io/civitai-metadata-studio-app-block/project/#release)
 
 ## Data and permissions
 

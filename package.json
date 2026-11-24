@@ -12,7 +12,7 @@
   "bugs": {
     "url": "https://github.com/chriscollins500/civitai-metadata-studio-app-block/issues"
   },
-  "homepage": "https://civitai.com/apps/run/civitai-metadata-studio",
+  "homepage": "https://chriscollins500.github.io/civitai-metadata-studio-app-block/",
   "engines": {
     "node": ">=24"
   },
@@ -20,6 +20,8 @@
     "build": "node scripts/build-release.mjs",
     "check": "node scripts/check.mjs",
     "docs:check": "node scripts/check-docs.mjs",
+    "site:build": "node scripts/build-site.mjs",
+    "wiki:build": "node scripts/build-wiki.mjs",
     "test": "node --test tests/*.test.mjs",
     "verify": "npm run build && node scripts/verify-app-block.mjs",
     "verify:schema": "npm run build && node scripts/verify-app-block.mjs --schema",
