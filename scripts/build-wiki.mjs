@@ -28,7 +28,7 @@ const files = new Map([
     homeLink + " · " + getStarted + " · " + markdownLink("Download the example PNG", website + "assets/aurora-observatory.png"), "",
     "## Use the app", "",
     "On your first visit, sign in to Civitai, choose **Apps → Browse the store**, find **Civitai Metadata Studio**, and choose **Open**. To return, use **My apps** in the same browser.", "",
-    markdownLink("Civitai.com App Store", links.storeCom) + " · " + markdownLink("Civitai.red App Store", links.storeRed), "",
+    markdownLink("Civitai.com homepage", links.civitaiCom) + " · " + markdownLink("Civitai.red homepage", links.civitaiRed), "",
     "## Guides", "",
     ...guides.map(([, , description], index) => guideList[index] + " — " + description), "",
     "## Ask a question or check a release", "",

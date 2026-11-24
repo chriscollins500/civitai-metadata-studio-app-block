@@ -8,8 +8,8 @@ export function at(path = "") {
 export const doc = (filename) => repo + "/blob/main/docs/" + filename + ".md";
 export const wiki = repo + "/wiki";
 export const links = {
-  storeCom: "https://civitai.com/apps/store",
-  storeRed: "https://civitai.red/apps/store",
+  civitaiCom: "https://civitai.com/",
+  civitaiRed: "https://civitai.red/",
   article: "https://civitai.red/articles/39668/whats-inside-that-ai-image-meet-civitai-metadata-studio",
   issues: repo + "/issues/new/choose",
   discussions: repo + "/discussions",
