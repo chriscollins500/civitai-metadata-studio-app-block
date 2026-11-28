@@ -1,24 +1,13 @@
 import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import Studio from "../src/engine.mjs";
 import { layout, website } from "../website/layout.mjs";
 import { pages } from "../website/pages.mjs";
+import { validateHostedRecord } from "./hosted-deployment.mjs";
 import { root } from "./output-paths.mjs";
-
-const output = join(root, "build", "site");
-const assets = [
-  ["app-block/listing/icon.png", "studio-icon.png"],
-  ["app-block/listing/cover.png", "studio-cover.png"],
-  ["website/assets/studio.css", "studio.css"],
-  ["website/assets/instrument-serif.woff2", "instrument-serif.woff2"],
-  ["website/assets/instrument-serif-italic.woff2", "instrument-serif-italic.woff2"],
-  ["website/assets/OFL-Instrument-Serif.txt", "OFL-Instrument-Serif.txt"],
-  ["website/assets/aurora-observatory.webp", "aurora-observatory.webp"],
-  ["website/assets/aurora-observatory.png", "aurora-observatory.png"],
-  ["website/assets/aurora-observatory-source.png", "aurora-observatory-source.png"],
-];
+import { assertSiteLayout, createSiteManifest, manifestFile, pageFilename, siteAssets, siteDirectory as output, siteFiles } from "./site-output.mjs";
 const readJson = async (path) => JSON.parse(await readFile(join(root, path), "utf8"));
 const manifest = await readJson("package.json");
 assert.equal(manifest.homepage, website, "Use the Pages home for the repository’s package homepage.");
@@ -26,9 +15,8 @@ assert.match(manifest.version, /^[0-9]+\.[0-9]+\.[0-9]+$/u, "Expected a tagged s
 const release = await readJson("releases/" + manifest.version + ".json");
 const hosted = await readJson("releases/live.json");
 assert.equal(release.version, manifest.version);
-assert.equal(hosted.referenceVersion, release.version);
-assert.match(hosted.version, /^[0-9]+\.[0-9]+\.[0-9]+$/u, "Expected a versioned Civitai deployment.");
-for (const artifact of [release.productionHtml, release.archive, hosted.html]) {
+validateHostedRecord(hosted, release.version);
+for (const artifact of [release.productionHtml, release.archive]) {
   assert.match(artifact.sha256, /^[a-f0-9]{64}$/u, "Invalid release digest.");
   assert.ok(Number.isSafeInteger(artifact.bytes) && artifact.bytes > 0, "Invalid release size.");
 }
@@ -59,11 +47,9 @@ const settings = ["Steps", "Sampler", "CFG scale", "Seed"].map((label) => {
 });
 const sample = { width, height, prompt: a1111.fields.positivePrompt, negativePrompt: a1111.fields.negativePrompt, settings };
 
-const htmlPages = new Map(pages.map((page) => {
-  const filename = page.notFound ? page.path : page.path + "index.html";
-  return [filename, layout(page, page.render({ release, hosted, sample }))];
-}));
-const expected = new Set([...htmlPages.keys(), ...assets.map(([, name]) => "assets/" + name), "sitemap.xml"]);
+const htmlPages = new Map(pages.map((page) => [
+  pageFilename(page), layout(page, page.render({ release, hosted, sample }))
+]));
 const home = new URL(website);
 const pageIds = new Map([...htmlPages].map(([name, markup]) => [
   name,
@@ -73,28 +59,30 @@ const pageIds = new Map([...htmlPages].map(([name, markup]) => [
 let links = 0;
 for (const [name, markup] of htmlPages) {
   assert.ok(pageIds.get(name).has("main"), name + " is missing the skip-link destination.");
-  for (const [, value] of markup.matchAll(/\s(?:href|src)="([^"]+)"/gu)) {
+  const urls = [...markup.matchAll(/\s(?:href|src)="([^"]+)"/gu)].map(([, url]) => url);
+  for (const [, srcset] of markup.matchAll(/\ssrcset="([^"]+)"/gu)) {
+    for (const candidate of srcset.split(",")) {
+      const [url, width] = candidate.trim().split(/\s+/u);
+      assert.match(width ?? "", /^[1-9][0-9]*w$/u, name + " has an invalid image width.");
+      urls.push(url);
+    }
+  }
+  for (const value of urls) {
     const url = new URL(value.replaceAll("&amp;", "&"), new URL(name, home));
     assert.equal(url.protocol, "https:", name + " has a non-HTTPS destination.");
     if (url.origin !== home.origin) continue;
     assert.ok(url.pathname.startsWith(home.pathname), name + " has a same-site link outside Pages.");
     const path = url.pathname.slice(home.pathname.length);
     const filename = url.pathname.endsWith("/") ? path + "index.html" : path;
-    assert.ok(expected.has(filename), name + " links to a missing file " + filename + ".");
+    assert.ok(siteFiles.has(filename), name + " links to a missing file " + filename + ".");
     if (url.hash) assert.ok(pageIds.get(filename)?.has(decodeURIComponent(url.hash.slice(1))), name + " links to a missing fragment " + value + ".");
     links += 1;
   }
 }
 
+await assertSiteLayout(output);
 await mkdir(output, { recursive: true });
-const existingFiles = (await readdir(output, { recursive: true, withFileTypes: true }))
-  .filter((entry) => !entry.isDirectory());
-for (const entry of existingFiles) {
-  const relative = join(entry.parentPath, entry.name).slice(output.length + 1).replaceAll("\\", "/");
-  assert.ok(entry.isFile() && expected.has(relative), "Unexpected website output: " + relative);
-}
-
-for (const [source, name] of assets) {
+for (const [source, name] of siteAssets) {
   const destination = join(output, "assets", name);
   await mkdir(dirname(destination), { recursive: true });
   await copyFile(join(root, source), destination);
@@ -113,5 +101,6 @@ const sitemap = [
   "",
 ].join("\n");
 await writeFile(join(output, "sitemap.xml"), sitemap);
-console.log("Built " + canonicalUrls.length + " GitHub Pages routes, a custom 404, and " + assets.length + " public assets.");
+await writeFile(join(output, manifestFile), (await createSiteManifest(output)).body);
+console.log("Built " + canonicalUrls.length + " GitHub Pages routes, a custom 404, and " + siteAssets.length + " public assets.");
 console.log("Verified " + links + " internal links and the example PNG’s metadata and encoded pixels.");

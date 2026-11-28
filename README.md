@@ -8,7 +8,7 @@ See the recipe inside an AI image. Read its prompt, seed, model and LoRA details
 
 ## Use the app
 
-For your first visit, sign in on the Civitai site you use and choose **Apps → Browse the store**. Find **Civitai Metadata Studio** and choose **Open**. To return, look under **My apps** in the same browser. [Civitai.com homepage](https://civitai.com/) · [Civitai.red homepage](https://civitai.red/)
+For your first visit, choose your Civitai site in the launch guide to sign in and reach its App Store. Find **Civitai Metadata Studio** and choose **Open**. To return, look under **My apps** in the same browser on that site. [Open the App Store guide](https://chriscollins500.github.io/civitai-metadata-studio-app-block/guide/#launch)
 
 1. **Open a PNG, JPEG, or WebP.** The editor reads the settings and workflow information still inside the file.
 2. **Review the recipe.** Check the prompt, seed, and resources. Open an exact Civitai model version when the editor can verify it.
@@ -27,6 +27,7 @@ Opening and editing happen in your browser. On an explicit save, the Civitai pag
 | [Build and verify](docs/Build-and-Verify.md) | Commands, artifact layout, and test coverage |
 | [Release provenance](docs/Release-Provenance.md) | Hashes for the live HTML and both package forms |
 | [Maintainer guide](docs/Maintainer-Guide.md) | Preparing a release and reviewing changes |
+| [GitHub Free review](docs/GitHub-Free-Review.md) | Repository checks, security settings, and the Pages verification workflow |
 
 [Browse the App Block wiki](https://github.com/chriscollins500/civitai-metadata-studio-app-block/wiki) · [Try the project website’s example](https://chriscollins500.github.io/civitai-metadata-studio-app-block/#example)
 
@@ -39,7 +40,7 @@ npm run reproduce
 npm run verify:live
 ```
 
-On `main`, the first command checks the signed GitHub v0.1.1 source and ZIP and rebuilds the recorded Civitai 0.1.2 HTML. The second compares that HTML byte for byte with the file currently served by Civitai. GitHub’s attestation verifies the immutable release tag, commit, and assets. [Build details](docs/Build-and-Verify.md) · [GitHub release record](releases/0.1.1.json) · [Hosted build record](releases/live.json) · [Verify the release](https://chriscollins500.github.io/civitai-metadata-studio-app-block/project/#release)
+On `main`, the first command checks the signed GitHub v0.1.1 source and ZIP and rebuilds the recorded Civitai 0.1.2 HTML. The second checks both Civitai catalog records and their Source and Support links, then compares the delivered HTML byte for byte. GitHub's release attestation verifies the immutable tag and its assets. [Build details](docs/Build-and-Verify.md) · [GitHub release record](releases/0.1.1.json) · [Hosted build record](releases/live.json) · [Verify the release](https://chriscollins500.github.io/civitai-metadata-studio-app-block/project/#release)
 
 ## Get involved
 

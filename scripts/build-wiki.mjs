@@ -27,7 +27,7 @@ const files = new Map([
     "Read and correct the generation settings inside an AI image. Save a copy with the same encoded pixels and verify the source behind the hosted version.", "",
     homeLink + " · " + getStarted + " · " + markdownLink("Download the example PNG", website + "assets/aurora-observatory.png"), "",
     "## Use the app", "",
-    "On your first visit, sign in to Civitai, choose **Apps → Browse the store**, find **Civitai Metadata Studio**, and choose **Open**. To return, use **My apps** in the same browser.", "",
+    "On your first visit, use the " + getStarted + " to sign in and reach the App Store. Find **Civitai Metadata Studio** and choose **Open**. To return, use **My apps** in the same browser on that site.", "",
     markdownLink("Civitai.com homepage", links.civitaiCom) + " · " + markdownLink("Civitai.red homepage", links.civitaiRed), "",
     "## Guides", "",
     ...guides.map(([, , description], index) => guideList[index] + " — " + description), "",

@@ -4,6 +4,7 @@ import { readFile } from "node:fs/promises";
 import { join } from "node:path";
 import { appBlockDirectory, root } from "./output-paths.mjs";
 import { renderAppBlock } from "./render-app-block.mjs";
+import { validateHostedRecord, verifyHostedBytes, verifyHostedCatalogs } from "./hosted-deployment.mjs";
 
 const args = process.argv.slice(2);
 assert.ok(args.length === 0 || (args.length === 1 && args[0] === "--live"), "Pass --live for a direct production comparison.");
@@ -33,28 +34,16 @@ assertArtifact("index.html (signed source release " + release.version + ")", htm
 assertArtifact(archiveName, archive, release.archive);
 
 const hosted = JSON.parse(await readFile(join(root, "releases", "live.json"), "utf8"));
-assert.equal(hosted.referenceVersion, release.version);
-assert.match(hosted.version, /^\d+\.\d+\.\d+$/u);
+validateHostedRecord(hosted, release.version);
 const hostedBuild = await renderAppBlock(hosted.version, epoch);
 const hostedHtml = Buffer.from(hostedBuild.html);
 assertArtifact("index.html (hosted " + hosted.version + ")", hostedHtml, hosted.html);
 
 if (args[0] === "--live") {
-  const liveUrl = "https://civitai-metadata-studio.civit.ai/";
-  assert.equal(hosted.html.url, liveUrl);
-  const response = await fetch(liveUrl, {
-    cache: "no-store", credentials: "omit", redirect: "error", signal: AbortSignal.timeout(20_000)
+  const catalogs = await verifyHostedCatalogs(hosted, {
+    source: packageJson.repository.url.replace(/\.git$/u, ""), support: packageJson.bugs.url
   });
-  assert.equal(response.status, 200, "Civitai production returned HTTP " + response.status);
-  assert.match(response.headers.get("content-type") || "", /^text\/html\b/i);
-  const parts = [];
-  let received = 0;
-  for await (const part of response.body) {
-    received += part.byteLength;
-    assert.ok(received <= hostedHtml.length, "The live deployment grew beyond its recorded size.");
-    parts.push(part);
-  }
-  const live = Buffer.concat(parts, received);
-  assert.ok(hostedHtml.equals(live), "Live HTML differs from hosted " + hosted.version + ". Check whether Civitai deployed a newer version.");
+  await verifyHostedBytes(hosted, hostedHtml);
+  for (const { label, listingId } of catalogs) console.log(label + " catalog matches " + listingId + ".");
   console.log("Live HTML matches rebuilt hosted " + hosted.version + " byte for byte · " + new Date().toISOString());
 }

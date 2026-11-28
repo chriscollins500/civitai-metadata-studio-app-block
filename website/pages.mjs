@@ -1,4 +1,5 @@
 import { anchor, at, doc, html, links, repo, standalone, wiki } from "./layout.mjs";
+import { catalogUrl, civitaiSites, storeSignInUrl } from "../scripts/hosted-deployment.mjs";
 
 const samplePath = at("assets/aurora-observatory.png");
 const sampleDownload = `<a class="text-link" href="${samplePath}" download>Download the example PNG</a>`;
@@ -23,7 +24,9 @@ function example(sample) {
   return `
     <figure class="specimen" id="example">
       <figcaption class="filebar"><strong>aurora-observatory.png</strong><span>PNG · ${sample.width} × ${sample.height}</span></figcaption>
-      <img class="specimen-image" src="${at("assets/aurora-observatory.webp")}" width="960" height="640" alt="${sampleAlt}" fetchpriority="high">
+      <img class="specimen-image" src="${at("assets/aurora-observatory.webp")}"
+        srcset="${at("assets/aurora-observatory-480.webp")} 480w, ${at("assets/aurora-observatory.webp")} 960w"
+        sizes="(max-width: 49rem) 92vw, 44vw" width="960" height="640" alt="${sampleAlt}" fetchpriority="high">
       <fieldset class="sample-reader">
         <legend class="visually-hidden">Explore example metadata</legend>
         <input id="example-prompt" type="radio" name="example-metadata" checked>
@@ -59,7 +62,7 @@ function home({ sample, hosted }) {
         <h1>Read the recipe <em>inside your render.</em></h1>
         <p>Find the prompt, seed, model details, and sometimes the original ComfyUI workflow. Fix what needs fixing and save a new copy with the same encoded pixels.</p>
         <div class="actions">
-          ${anchor(at("guide/#launch"), "Open Metadata Studio", "button primary")}
+          ${anchor(at("guide/#launch"), "Start on Civitai", "button primary")}
           ${anchor(at("#example"), "Explore an example", "button secondary")}
         </div>
         <p class="hero-note">For PNG, JPEG, and WebP on Civitai.</p>
@@ -99,18 +102,17 @@ function guide({ sample }) {
         <a href="#faq">Troubleshooting</a>
       </nav>
       <div class="article-flow">
-        <section id="launch">
+        <section id="launch" tabindex="-1">
           <h2>Open on Civitai</h2>
-          <p>Start on the Civitai site you use and sign in there.</p>
+          <p>Choose the Civitai site you use. The link takes you through sign-in and returns you to that site's App Store.</p>
           <div class="actions">
-            ${anchor(links.civitaiCom, "Visit Civitai.com", "button primary")}
-            ${anchor(links.civitaiRed, "Visit Civitai.red", "button secondary")}
+            ${civitaiSites.map((site, index) => anchor(storeSignInUrl(site), "Continue on " + site.label, index === 0 ? "button primary" : "button secondary")).join("")}
           </div>
           <ol class="steps">
-            <li>After you sign in, choose <strong>Apps</strong> and then <strong>Browse the store</strong>.</li>
-            <li>Find <strong>Civitai Metadata Studio</strong> in the Store.</li>
-            <li>Choose <strong>Open</strong> on its listing. Next time, find it under <strong>My apps</strong> in the same browser.</li>
+            <li>Find <strong>Civitai Metadata Studio</strong> in the App Store.</li>
+            <li>Choose <strong>Open</strong> on its listing. Next time, find it under <strong>My apps</strong> on that site in the same browser.</li>
           </ol>
+          <p>If the Store doesn't open, visit the ${anchor(links.civitaiCom, "Civitai.com homepage", "text-link")} or ${anchor(links.civitaiRed, "Civitai.red homepage", "text-link")}. Sign in, then choose <strong>Apps</strong> and <strong>Browse the store</strong>.</p>
         </section>
         <section id="practice">
           <h2>Try a small edit</h2>
@@ -214,11 +216,14 @@ function project({ release, hosted }) {
       <div class="article-flow">
         <section id="release">
           <h2>Civitai App Block v${html(hosted.version)}</h2>
-          <p>The served HTML matches this repository’s renderer byte for byte. The reference is the signed ${html(tag)} source release. Civitai’s current build changes the version banner and the corresponding script hash. Verified on ${html(hosted.verifiedOn)}.</p>
+          <p>On <time datetime="${html(hosted.verifiedOn)}">${html(hosted.verifiedOn)}</time>, both Civitai catalogs pointed to the HTML below, which matched this repository's renderer byte for byte. The renderer uses signed ${html(tag)} source and applies the hosted version banner and its corresponding script hash.</p>
           <dl class="hashes">
             <div><dt>Hosted HTML <span>${hosted.html.bytes.toLocaleString("en-US")} bytes</span></dt><dd><code>${html(hosted.html.sha256)}</code></dd></div>
           </dl>
-          <p>${anchor(repo + "/blob/main/releases/live.json", "Hosted build proof", "text-link")}.</p>
+          <div class="inline-links">
+            ${anchor(repo + "/blob/main/releases/live.json", "Hosted build record", "text-link")}
+            ${civitaiSites.map((site) => anchor(catalogUrl(site, hosted), site.label + " catalog record", "text-link")).join("")}
+          </div>
           <h3>Immutable GitHub release ${html(tag)}</h3>
           <p>GitHub publishes the original App Block ZIP, its checksum file, and a signed release attestation.</p>
           <div class="actions">
@@ -239,7 +244,8 @@ function project({ release, hosted }) {
           <h2>Build and verify</h2>
           <p>Use Node.js 24 or later and follow <code>.node-version</code> for the recorded verification version. Run these commands from the default branch to check both records.</p>
           <pre><code>${html(commands.join("\n"))}</code></pre>
-          <p><code>reproduce</code> checks the historical release and the recorded hosted HTML. <code>verify:live</code> also compares that hosted build with what Civitai serves now. To check the original publication independently, check out <code>${html(tag)}</code> and run <code>npm run reproduce</code>.</p>
+          <p><code>reproduce</code> checks the historical release and the recorded hosted HTML. <code>verify:live</code> also checks both Civitai catalogs, their Source and Support links, and the exact HTML served. To check the original publication independently, check out <code>${html(tag)}</code> and run <code>npm run reproduce</code>.</p>
+          <p>Run <code>npm run site:build</code> and <code>npm run site:verify -- --live</code> from the deployed source revision to compare this website's files with a local build. ${anchor(at("deployment.json"), "Pages SHA-256 manifest", "text-link")}.</p>
           <p>To authenticate a ZIP from the immutable release, install GitHub CLI and run this beside the downloaded file.</p>
           <pre><code>${html("gh release verify-asset " + tag + " ./" + zipFile + " --repo chriscollins500/civitai-metadata-studio-app-block")}</code></pre>
           <div class="inline-links">
@@ -265,6 +271,7 @@ function project({ release, hosted }) {
             ${anchor(repo + "/blob/main/CONTRIBUTING.md", "Contributing guide", "text-link")}
             ${anchor(wiki, "App Block wiki", "text-link")}
             ${anchor(doc("Maintainer-Guide"), "Maintainer guide", "text-link")}
+            ${anchor(doc("GitHub-Free-Review"), "GitHub checks and settings", "text-link")}
             ${anchor(repo + "/blob/main/CODE_OF_CONDUCT.md", "Code of conduct", "text-link")}
             ${anchor(links.security, "Security policy", "text-link")}
           </div>
