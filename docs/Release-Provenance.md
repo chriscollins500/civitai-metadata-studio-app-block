@@ -6,7 +6,7 @@ Version **0.1.1** is the first public source release of the hosted App Block. Th
 
 Civitai serves **0.1.2** on both hosts. The listing includes the GitHub Source and Support links and a screenshot. On November 24, 2026, the hosted HTML matched the shared renderer’s 0.1.2 output byte for byte. Its only differences from the original 0.1.1 HTML are the build banner’s version and the corresponding CSP script hash.
 
-The 444,139-byte hosted HTML has SHA-256 `40bd313d1235a103760d67d4431f05656bbe86bb496defecb7f5190a8c1ddafe`. On `main`, run `npm run verify:live` to repeat the direct comparison. [Hosted build record](../releases/live.json) · [Live HTML](https://civitai-metadata-studio.civit.ai/)
+The 444,139-byte hosted HTML has SHA-256 `40bd313d1235a103760d67d4431f05656bbe86bb496defecb7f5190a8c1ddafe`. The November 28, 2026 check confirmed that both catalogs pointed to it and linked this repository as Source and its issue tracker as Support. On `main`, run `npm run verify:live` to repeat the checks. [Hosted build record](../releases/live.json) · [Civitai.com catalog](https://civitai.com/api/v1/apps/civitai-metadata-studio) · [Civitai.red catalog](https://civitai.red/api/v1/apps/civitai-metadata-studio)
 
 ## Signed GitHub release v0.1.1
 

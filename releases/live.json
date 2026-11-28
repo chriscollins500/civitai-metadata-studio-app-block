@@ -1,7 +1,12 @@
 {
   "version": "0.1.2",
   "referenceVersion": "0.1.1",
-  "verifiedOn": "2026-11-24",
+  "verifiedOn": "2026-11-28",
+  "catalog": {
+    "slug": "civitai-metadata-studio",
+    "listingId": "apl_01M80J4NG01SFR615VSECK1G0X",
+    "appBlockId": "apb_01M8264J9DX8VQWR7MX1TT3YF1"
+  },
   "html": {
     "url": "https://civitai-metadata-studio.civit.ai/",
     "bytes": 444139,
